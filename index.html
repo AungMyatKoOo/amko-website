@@ -38,22 +38,22 @@ text-align:left;
 opacity:.8;
 font-size:13px;
 }
+video{
+margin-top:10px;
+border-radius:12px;
+width:100%;
+}
 </style>
 </head>
 
 <body>
 
 <div class="box" id="login">
-
 <h1>🚀 AMKO</h1>
 <p>Login First</p>
 
 <input id="gmail" placeholder="Enter Gmail">
-
-<button onclick="login()">
-🔐 Continue
-</button>
-
+<button onclick="login()">🔐 Continue</button>
 </div>
 
 <div class="box" id="home" style="display:none">
@@ -72,8 +72,7 @@ Unlimited Access
 Video မရွေးရသေးပါ
 </div>
 
-<input id="ytlink"
-placeholder="Paste YouTube link">
+<input id="ytlink" placeholder="Paste YouTube link">
 
 <select>
 <option>Auto → Myanmar</option>
@@ -81,7 +80,7 @@ placeholder="Paste YouTube link">
 <option>Chinese → Myanmar</option>
 </select>
 
-<select id="voice">
+<select>
 <option>Narrator</option>
 <option>Male</option>
 <option>Female</option>
@@ -111,9 +110,7 @@ placeholder="Paste YouTube link">
 <option>Minimal</option>
 </select>
 
-<button>
-💾 Save Settings
-</button>
+<button>💾 Save Settings</button>
 
 </div>
 
@@ -121,8 +118,9 @@ placeholder="Paste YouTube link">
 
 function login(){
 
-let g=
-document.getElementById("gmail").value;
+let g=document.getElementById(
+"gmail"
+).value;
 
 if(g==""){
 alert("Gmail ထည့်ပါ");
@@ -158,8 +156,7 @@ document.getElementById(
 
 }
 
-}
-);
+});
 
 function start(){
 
@@ -169,13 +166,73 @@ document.getElementById(
 
 <h2>🤖 Processing...</h2>
 
-<div class='step'>
-⏳ Analyzing...
+<div style="
+background:#334155;
+height:20px;
+border-radius:20px;
+overflow:hidden;
+">
+
+<div id="bar"
+style="
+height:20px;
+width:0%;
+background:#22c55e;
+">
+</div>
+
+</div>
+
+<p id="percent">
+0%
+</p>
+
+<div class='step'
+id='status'>
+⏳ Starting...
 </div>
 
 `;
 
-setTimeout(function(){
+let p=0;
+
+let timer=setInterval(function(){
+
+p+=10;
+
+document.getElementById(
+"bar"
+).style.width=
+p+"%";
+
+document.getElementById(
+"percent"
+).innerText=
+p+"%";
+
+if(p==20){
+status.innerText=
+"✅ Video analyzed";
+}
+
+if(p==40){
+status.innerText=
+"🔄 Translating...";
+}
+
+if(p==60){
+status.innerText=
+"🗣️ Voice generating...";
+}
+
+if(p==80){
+status.innerText=
+"📝 Subtitle creating...";
+}
+
+if(p>=100){
+
+clearInterval(timer);
 
 document.getElementById(
 "process"
@@ -183,12 +240,17 @@ document.getElementById(
 
 <h2>✅ Complete</h2>
 
-<div class='step'>
-🎬 Video Ready
-</div>
+<video
+id="preview"
+controls>
+</video>
 
 <div class='step'>
-📝 Subtitle Ready
+📝 Subtitle:
+<br><br>
+[00:01] မင်္ဂလာပါ...
+<br>
+[00:04] Amko AI ဘာသာပြန်ပြီးပါပြီ
 </div>
 
 <button>
@@ -197,7 +259,25 @@ document.getElementById(
 
 `;
 
-},5000)
+let file=
+document.getElementById(
+"videoFile"
+).files[0];
+
+if(file){
+
+let url=
+URL.createObjectURL(file);
+
+document.getElementById(
+"preview"
+).src=url;
+
+}
+
+}
+
+},500);
 
 }
 
