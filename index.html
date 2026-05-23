@@ -5,25 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
-text-align:center;
-padding:30px;
+padding:20px;
+margin:0;
 }
 .box{
 background:#1e293b;
 padding:25px;
 border-radius:20px;
-max-width:350px;
-margin:auto;
+max-width:420px;
+margin:40px auto;
+text-align:center;
+}
+input,select,button{
+width:100%;
+padding:14px;
+margin-top:12px;
+border-radius:12px;
+border:none;
+font-size:16px;
 }
 button{
-padding:12px 20px;
-border:none;
-border-radius:10px;
-margin:8px;
-font-size:16px;
+cursor:pointer;
+}
+.small{
+font-size:14px;
+opacity:.8;
+margin-top:10px;
 }
 </style>
 </head>
@@ -32,11 +42,28 @@ font-size:16px;
 
 <div class="box">
 <h1>🚀 AMKO</h1>
-<p>AI Burmese Video Translator</p>
+<p>One-Click Burmese AI Video Translator</p>
 
-<button>📤 Upload Video</button>
-<button>🎬 Translate</button>
-<button>📥 Download Subtitle</button>
+<input type="text" placeholder="Paste YouTube link...">
+
+<select>
+<option>Auto Detect → Myanmar</option>
+<option>Chinese → Myanmar</option>
+<option>English → Myanmar</option>
+<option>Any Language → Myanmar</option>
+</select>
+
+<select>
+<option>Narrator Voice</option>
+<option>Male Voice</option>
+<option>Female Voice</option>
+</select>
+
+<button>🎬 Translate Now</button>
+
+<div class="small">
+AI Voice • Subtitle • Burmese Translation
+</div>
 
 </div>
 
