@@ -4,7 +4,6 @@
 <title>Amko</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-
 body{
 font-family:Arial,sans-serif;
 background:#0f172a;
@@ -12,16 +11,14 @@ color:white;
 margin:0;
 padding:20px;
 }
-
 .box{
 background:#1e293b;
 padding:25px;
 border-radius:20px;
-max-width:420px;
+max-width:430px;
 margin:20px auto;
 text-align:center;
 }
-
 input,select,button{
 width:100%;
 padding:14px;
@@ -30,19 +27,17 @@ border:none;
 border-radius:12px;
 font-size:16px;
 }
-
 .step{
 background:#334155;
 padding:12px;
 margin-top:10px;
 border-radius:10px;
+text-align:left;
 }
-
 .small{
 opacity:.8;
 font-size:13px;
 }
-
 </style>
 </head>
 
@@ -51,88 +46,74 @@ font-size:13px;
 <div class="box" id="login">
 
 <h1>🚀 AMKO</h1>
-
 <p>Login First</p>
 
-<input
-id="gmail"
-placeholder="Enter Gmail">
+<input id="gmail" placeholder="Enter Gmail">
 
 <button onclick="login()">
-
 🔐 Continue
-
 </button>
 
 </div>
 
+<div class="box" id="home" style="display:none">
 
-<div class="box"
-id="home"
-style="display:none">
-
-<h2>
-👑 Owner Mode Active
-</h2>
+<h2>👑 Owner Mode Active</h2>
 
 <div class="step">
-
-Profile:
-owner@gmail.com
-
+Profile: owner@gmail.com
 <br><br>
-
 Unlimited Access
-
 </div>
 
-<input
-type="file"
-id="videoFile"
-accept="video/*">
+<input type="file" id="videoFile" accept="video/*">
 
-<div
-class="small"
-id="fileStatus">
-
+<div class="small" id="fileStatus">
 Video မရွေးရသေးပါ
-
 </div>
 
-<input
-id="ytlink"
-placeholder=
-"Paste YouTube link">
+<input id="ytlink"
+placeholder="Paste YouTube link">
 
 <select>
-<option>
-Auto → Myanmar
-</option>
+<option>Auto → Myanmar</option>
+<option>English → Myanmar</option>
+<option>Chinese → Myanmar</option>
 </select>
 
-<select>
-<option>
-Narrator
-</option>
-
-<option>
-Male
-</option>
-
-<option>
-Female
-</option>
+<select id="voice">
+<option>Narrator</option>
+<option>Male</option>
+<option>Female</option>
 </select>
 
-<button
-onclick="start()">
-
+<button onclick="start()">
 🎬 Translate
-
 </button>
 
-<div id="process">
+<div id="process"></div>
+
+<h3>📜 History</h3>
+
+<div class="step">
+🎬 English → Myanmar ✓
 </div>
+
+<div class="step">
+🎬 Chinese → Myanmar ✓
+</div>
+
+<h3>⚙️ Settings</h3>
+
+<select>
+<option>Subtitle: Default</option>
+<option>Large</option>
+<option>Minimal</option>
+</select>
+
+<button>
+💾 Save Settings
+</button>
 
 </div>
 
@@ -141,29 +122,20 @@ onclick="start()">
 function login(){
 
 let g=
-document.getElementById(
-"gmail"
-).value;
+document.getElementById("gmail").value;
 
 if(g==""){
-
-alert(
-"Gmail ထည့်ပါ"
-);
-
+alert("Gmail ထည့်ပါ");
 return;
-
 }
 
 document.getElementById(
 "login"
-).style.display=
-"none";
+).style.display="none";
 
 document.getElementById(
 "home"
-).style.display=
-"block";
+).style.display="block";
 
 }
 
@@ -171,13 +143,9 @@ document.addEventListener(
 "change",
 function(e){
 
-if(
-e.target.id==
-"videoFile"
-){
+if(e.target.id=="videoFile"){
 
-let f=
-e.target.files[0];
+let f=e.target.files[0];
 
 if(f){
 
@@ -199,12 +167,10 @@ document.getElementById(
 "process"
 ).innerHTML=`
 
-<h2>
-🤖 Processing...
-</h2>
+<h2>🤖 Processing...</h2>
 
 <div class='step'>
-⏳ Analyzing
+⏳ Analyzing...
 </div>
 
 `;
@@ -215,9 +181,7 @@ document.getElementById(
 "process"
 ).innerHTML=`
 
-<h2>
-✅ Complete
-</h2>
+<h2>✅ Complete</h2>
 
 <div class='step'>
 🎬 Video Ready
@@ -228,9 +192,7 @@ document.getElementById(
 </div>
 
 <button>
-
 ⬇️ Download
-
 </button>
 
 `;
