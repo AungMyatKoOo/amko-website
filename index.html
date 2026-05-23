@@ -49,7 +49,7 @@ border-radius:10px;
 <h1>🚀 AMKO</h1>
 <p>One-Click Burmese AI Video Translator</p>
 
-<input type="text" placeholder="Paste YouTube link...">
+<input id="ytlink" type="text" placeholder="Paste YouTube link...">
 
 <select>
 <option>Auto Detect → Myanmar</option>
@@ -81,6 +81,14 @@ border-radius:10px;
 
 <script>
 function start(){
+
+let link=document.getElementById("ytlink").value;
+
+if(link==""){
+alert("YouTube link ထည့်ပါ");
+return;
+}
+
 document.getElementById("home").style.display="none";
 document.getElementById("process").style.display="block";
 
@@ -88,7 +96,7 @@ setTimeout(function(){
 document.getElementById("process").innerHTML=`
 <h2>✅ Translation Complete</h2>
 
-<div class='step'>🎬 Video Preview Ready</div>
+<div class='step'>🎬 Video Link Received</div>
 <div class='step'>📝 Burmese Subtitle Ready</div>
 <div class='step'>🗣️ Myanmar Voice Added</div>
 
