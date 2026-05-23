@@ -90,32 +90,58 @@ return;
 }
 
 document.getElementById("home").style.display="none";
+
 document.getElementById("process").style.display="block";
 
-setTimeout(function(){
+document.getElementById("process").innerHTML=`
+<h2>🤖 AI Processing...</h2>
+
+<div style="background:#334155;border-radius:20px;height:22px;overflow:hidden;margin-top:15px;">
+<div id="bar" style="height:22px;width:0%;background:#22c55e;"></div>
+</div>
+
+<p id="percent">0%</p>
+
+<div class='step' id='status'>⏳ Starting...</div>
+`;
+
+let p=0;
+
+let timer=setInterval(function(){
+
+p+=10;
+
+document.getElementById("bar").style.width=p+"%";
+document.getElementById("percent").innerText=p+"%";
+
+if(p==20){
+document.getElementById("status").innerText="✅ Video analyzed";
+}
+
+if(p==40){
+document.getElementById("status").innerText="🔄 Translating to Myanmar...";
+}
+
+if(p==60){
+document.getElementById("status").innerText="🗣️ Generating Myanmar voice...";
+}
+
+if(p==80){
+document.getElementById("status").innerText="📝 Creating subtitles...";
+}
+
+if(p>=100){
+
+clearInterval(timer);
 
 document.getElementById("process").innerHTML=`
 <h2>✅ Translation Complete</h2>
 
-<div class='step'>🎬 Video Preview</div>
-
-<div style="
-height:180px;
-background:#0f172a;
-border-radius:12px;
-margin-top:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-">
-Video Preview Area
-</div>
+<div class='step'>🎬 Video Preview Ready</div>
 
 <div class='step'>
-📝 Subtitle:
-<br><br>
-[00:01] မင်္ဂလာပါ...
-<br>
+📝 Subtitle:<br><br>
+[00:01] မင်္ဂလာပါ...<br>
 [00:04] Amko AI ဘာသာပြန်ပြီးပါပြီ
 </div>
 
@@ -124,10 +150,12 @@ Video Preview Area
 <button>⬇️ Download Video</button>
 `;
 
-},5000)
+}
+
+},500);
 
 }
 </script>
-
+  
 </body>
 </html>
