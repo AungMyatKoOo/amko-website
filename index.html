@@ -83,6 +83,19 @@ border-radius:10px;
 function start(){
 document.getElementById("home").style.display="none";
 document.getElementById("process").style.display="block";
+
+setTimeout(function(){
+document.getElementById("process").innerHTML=`
+<h2>✅ Translation Complete</h2>
+
+<div class='step'>🎬 Video Preview Ready</div>
+<div class='step'>📝 Burmese Subtitle Ready</div>
+<div class='step'>🗣️ Myanmar Voice Added</div>
+
+<button>⬇️ Download Video</button>
+`;
+},5000)
+
 }
 </script>
 
