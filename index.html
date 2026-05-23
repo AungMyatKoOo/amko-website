@@ -39,200 +39,69 @@ opacity:.8;
 font-size:13px;
 }
 video{
-margin-top:10px;
-border-radius:12px;
 width:100%;
+border-radius:12px;
+margin-top:10px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="box" id="login">
+<div class="box">
 <h1>🚀 AMKO</h1>
-<p>Login First</p>
-
-<input id="gmail" placeholder="Enter Gmail">
-<button onclick="login()">🔐 Continue</button>
-</div>
-
-<div class="box" id="home" style="display:none">
-
-<h2>👑 Owner Mode Active</h2>
-
-<div class="step">
-Profile: owner@gmail.com
-<br><br>
-Unlimited Access
-</div>
 
 <input type="file" id="videoFile" accept="video/*">
-
 <div class="small" id="fileStatus">
 Video မရွေးရသေးပါ
 </div>
-
-<input id="ytlink" placeholder="Paste YouTube link">
-
-<select>
-<option>Auto → Myanmar</option>
-<option>English → Myanmar</option>
-<option>Chinese → Myanmar</option>
-</select>
-
-<select>
-<option>Narrator</option>
-<option>Male</option>
-<option>Female</option>
-</select>
 
 <button onclick="start()">
 🎬 Translate
 </button>
 
 <div id="process"></div>
-
-<h3>📜 History</h3>
-
-<div class="step">
-🎬 English → Myanmar ✓
-</div>
-
-<div class="step">
-🎬 Chinese → Myanmar ✓
-</div>
-
-<h3>⚙️ Settings</h3>
-
-<select>
-<option>Subtitle: Default</option>
-<option>Large</option>
-<option>Minimal</option>
-</select>
-
-<button>💾 Save Settings</button>
-
 </div>
 
 <script>
 
-function login(){
+document.getElementById("videoFile")
+.addEventListener("change",function(){
 
-let g=document.getElementById(
-"gmail"
-).value;
-
-if(g==""){
-alert("Gmail ထည့်ပါ");
-return;
-}
-
-document.getElementById(
-"login"
-).style.display="none";
-
-document.getElementById(
-"home"
-).style.display="block";
-
-}
-
-document.addEventListener(
-"change",
-function(e){
-
-if(e.target.id=="videoFile"){
-
-let f=e.target.files[0];
+let f=this.files[0];
 
 if(f){
-
 document.getElementById(
 "fileStatus"
-).innerText=
-"📁 "+f.name;
-
-}
-
+).innerText="📁 "+f.name;
 }
 
 });
 
 function start(){
 
+let file=
+document.getElementById(
+"videoFile"
+).files[0];
+
+if(!file){
+alert("Video ရွေးပါ");
+return;
+}
+
 document.getElementById(
 "process"
 ).innerHTML=`
 
 <h2>🤖 Processing...</h2>
-
-<div style="
-background:#334155;
-height:20px;
-border-radius:20px;
-overflow:hidden;
-">
-
-<div id="bar"
-style="
-height:20px;
-width:0%;
-background:#22c55e;
-">
-</div>
-
-</div>
-
-<p id="percent">
-0%
-</p>
-
-<div class='step'
-id='status'>
-⏳ Starting...
-</div>
+<div class='step'>⏳ Working...</div>
 
 `;
 
-let p=0;
+setTimeout(function(){
 
-let timer=setInterval(function(){
-
-p+=10;
-
-document.getElementById(
-"bar"
-).style.width=
-p+"%";
-
-document.getElementById(
-"percent"
-).innerText=
-p+"%";
-
-if(p==20){
-status.innerText=
-"✅ Video analyzed";
-}
-
-if(p==40){
-status.innerText=
-"🔄 Translating...";
-}
-
-if(p==60){
-status.innerText=
-"🗣️ Voice generating...";
-}
-
-if(p==80){
-status.innerText=
-"📝 Subtitle creating...";
-}
-
-if(p>=100){
-
-clearInterval(timer);
+let url=
+URL.createObjectURL(file);
 
 document.getElementById(
 "process"
@@ -241,43 +110,24 @@ document.getElementById(
 <h2>✅ Complete</h2>
 
 <video
-id="preview"
-controls>
+controls
+src="${url}">
 </video>
 
 <div class='step'>
-📝 Subtitle:
-<br><br>
-[00:01] မင်္ဂလာပါ...
-<br>
-[00:04] Amko AI ဘာသာပြန်ပြီးပါပြီ
+📝 Subtitle Ready
 </div>
 
+<a href="${url}"
+download="${file.name}">
 <button>
-⬇️ Download
+⬇️ Download Video
 </button>
+</a>
 
 `;
 
-let file=
-document.getElementById(
-"videoFile"
-).files[0];
-
-if(file){
-
-let url=
-URL.createObjectURL(file);
-
-document.getElementById(
-"preview"
-).src=url;
-
-}
-
-}
-
-},500);
+},3000)
 
 }
 
