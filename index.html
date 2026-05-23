@@ -3,14 +3,14 @@
 <head>
 <title>Amko</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
+
 body{
 font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
-padding:20px;
 margin:0;
+padding:20px;
 }
 
 .box{
@@ -18,7 +18,7 @@ background:#1e293b;
 padding:25px;
 border-radius:20px;
 max-width:420px;
-margin:40px auto;
+margin:20px auto;
 text-align:center;
 }
 
@@ -26,79 +26,158 @@ input,select,button{
 width:100%;
 padding:14px;
 margin-top:12px;
-border-radius:12px;
 border:none;
+border-radius:12px;
 font-size:16px;
 }
 
-.small{
-font-size:13px;
-opacity:.8;
-margin-top:10px;
-}
-
 .step{
+background:#334155;
 padding:12px;
 margin-top:10px;
-background:#334155;
-border-radius:12px;
+border-radius:10px;
 }
+
+.small{
+opacity:.8;
+font-size:13px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-
-<div id="home">
+<div class="box" id="login">
 
 <h1>🚀 AMKO</h1>
-<p>One-Click Burmese AI Video Translator</p>
 
-<input type="file" id="videoFile" accept="video/*">
+<p>Login First</p>
 
-<div class="small" id="fileStatus">
-Video မရွေးရသေးပါ
-</div>
+<input
+id="gmail"
+placeholder="Enter Gmail">
 
-<input id="ytlink" type="text"
-placeholder="Paste YouTube link...">
+<button onclick="login()">
 
-<select>
-<option>Auto Detect → Myanmar</option>
-<option>Chinese → Myanmar</option>
-<option>English → Myanmar</option>
-</select>
+🔐 Continue
 
-<select>
-<option>Narrator Voice</option>
-<option>Male Voice</option>
-<option>Female Voice</option>
-</select>
-
-<button onclick="start()">
-🎬 Translate Now
 </button>
 
 </div>
 
-<div id="process"
+
+<div class="box"
+id="home"
 style="display:none">
+
+<h2>
+👑 Owner Mode Active
+</h2>
+
+<div class="step">
+
+Profile:
+owner@gmail.com
+
+<br><br>
+
+Unlimited Access
+
+</div>
+
+<input
+type="file"
+id="videoFile"
+accept="video/*">
+
+<div
+class="small"
+id="fileStatus">
+
+Video မရွေးရသေးပါ
+
+</div>
+
+<input
+id="ytlink"
+placeholder=
+"Paste YouTube link">
+
+<select>
+<option>
+Auto → Myanmar
+</option>
+</select>
+
+<select>
+<option>
+Narrator
+</option>
+
+<option>
+Male
+</option>
+
+<option>
+Female
+</option>
+</select>
+
+<button
+onclick="start()">
+
+🎬 Translate
+
+</button>
+
+<div id="process">
 </div>
 
 </div>
 
 <script>
 
+function login(){
+
+let g=
+document.getElementById(
+"gmail"
+).value;
+
+if(g==""){
+
+alert(
+"Gmail ထည့်ပါ"
+);
+
+return;
+
+}
+
+document.getElementById(
+"login"
+).style.display=
+"none";
+
+document.getElementById(
+"home"
+).style.display=
+"block";
+
+}
+
 document.addEventListener(
 "change",
 function(e){
 
 if(
-e.target.id==="videoFile"
+e.target.id==
+"videoFile"
 ){
 
-let f=e.target.files[0];
+let f=
+e.target.files[0];
 
 if(f){
 
@@ -116,163 +195,47 @@ document.getElementById(
 
 function start(){
 
-let link=
-document.getElementById(
-"ytlink"
-).value;
-
-let file=
-document.getElementById(
-"videoFile"
-).files[0];
-
-if(
-link=="" && !file
-){
-
-alert(
-"YouTube link သို့ Video တစ်ခုထည့်ပါ"
-);
-
-return;
-
-}
-
-document.getElementById(
-"home"
-).style.display="none";
-
-document.getElementById(
-"process"
-).style.display="block";
-
 document.getElementById(
 "process"
 ).innerHTML=`
 
-<h2>🤖 AI Processing...</h2>
+<h2>
+🤖 Processing...
+</h2>
 
-<div style="
-background:#334155;
-border-radius:20px;
-height:22px;
-overflow:hidden;
-margin-top:15px;
-">
-
-<div id="bar"
-style="
-height:22px;
-width:0%;
-background:#22c55e;
-">
-</div>
-
-</div>
-
-<p id="percent">
-0%
-</p>
-
-<div class='step'
-id='status'>
-
-⏳ Starting...
-
+<div class='step'>
+⏳ Analyzing
 </div>
 
 `;
 
-let p=0;
-
-let timer=
-setInterval(function(){
-
-p+=10;
-
-document.getElementById(
-"bar"
-).style.width=
-p+"%";
-
-document.getElementById(
-"percent"
-).innerText=
-p+"%";
-
-if(p==20){
-
-document.getElementById(
-"status"
-).innerText=
-"✅ Video analyzed";
-
-}
-
-if(p==40){
-
-document.getElementById(
-"status"
-).innerText=
-"🔄 Translating...";
-
-}
-
-if(p==60){
-
-document.getElementById(
-"status"
-).innerText=
-"🗣️ Voice generating...";
-
-}
-
-if(p==80){
-
-document.getElementById(
-"status"
-).innerText=
-"📝 Subtitle creating...";
-
-}
-
-if(p>=100){
-
-clearInterval(timer);
+setTimeout(function(){
 
 document.getElementById(
 "process"
 ).innerHTML=`
 
 <h2>
-✅ Translation Complete
+✅ Complete
 </h2>
 
 <div class='step'>
-🎬 Video Preview Ready
+🎬 Video Ready
 </div>
 
 <div class='step'>
 📝 Subtitle Ready
-<br><br>
-[00:01] မင်္ဂလာပါ...
-<br>
-[00:04] Amko AI ဘာသာပြန်ပြီးပါပြီ
-</div>
-
-<div class='step'>
-🗣️ Myanmar Voice Added
 </div>
 
 <button>
-⬇️ Download Video
+
+⬇️ Download
+
 </button>
 
 `;
 
-}
-
-},500);
+},5000)
 
 }
 
