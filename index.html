@@ -93,15 +93,37 @@ document.getElementById("home").style.display="none";
 document.getElementById("process").style.display="block";
 
 setTimeout(function(){
+
 document.getElementById("process").innerHTML=`
 <h2>✅ Translation Complete</h2>
 
-<div class='step'>🎬 Video Link Received</div>
-<div class='step'>📝 Burmese Subtitle Ready</div>
+<div class='step'>🎬 Video Preview</div>
+
+<div style="
+height:180px;
+background:#0f172a;
+border-radius:12px;
+margin-top:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+">
+Video Preview Area
+</div>
+
+<div class='step'>
+📝 Subtitle:
+<br><br>
+[00:01] မင်္ဂလာပါ...
+<br>
+[00:04] Amko AI ဘာသာပြန်ပြီးပါပြီ
+</div>
+
 <div class='step'>🗣️ Myanmar Voice Added</div>
 
 <button>⬇️ Download Video</button>
 `;
+
 },5000)
 
 }
