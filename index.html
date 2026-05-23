@@ -27,13 +27,16 @@ border-radius:12px;
 border:none;
 font-size:16px;
 }
-button{
-cursor:pointer;
+#process{
+display:none;
+margin-top:20px;
+text-align:left;
 }
-.small{
-font-size:14px;
-opacity:.8;
-margin-top:10px;
+.step{
+padding:10px;
+margin-top:8px;
+background:#334155;
+border-radius:10px;
 }
 </style>
 </head>
@@ -41,6 +44,8 @@ margin-top:10px;
 <body>
 
 <div class="box">
+
+<div id="home">
 <h1>🚀 AMKO</h1>
 <p>One-Click Burmese AI Video Translator</p>
 
@@ -50,7 +55,6 @@ margin-top:10px;
 <option>Auto Detect → Myanmar</option>
 <option>Chinese → Myanmar</option>
 <option>English → Myanmar</option>
-<option>Any Language → Myanmar</option>
 </select>
 
 <select>
@@ -59,13 +63,28 @@ margin-top:10px;
 <option>Female Voice</option>
 </select>
 
-<button>🎬 Translate Now</button>
+<button onclick="start()">🎬 Translate Now</button>
+</div>
 
-<div class="small">
-AI Voice • Subtitle • Burmese Translation
+<div id="process">
+<h2>AI Processing...</h2>
+
+<div class="step">✅ Video analyzed</div>
+<div class="step">🔄 Translating to Myanmar...</div>
+<div class="step">⏳ Generating Myanmar voice...</div>
+<div class="step">⏳ Creating subtitles...</div>
+<div class="step">⏳ Exporting video...</div>
+
 </div>
 
 </div>
+
+<script>
+function start(){
+document.getElementById("home").style.display="none";
+document.getElementById("process").style.display="block";
+}
+</script>
 
 </body>
 </html>
