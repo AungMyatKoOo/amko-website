@@ -13,10 +13,10 @@ padding:20px;
 }
 .box{
 background:#1e293b;
-padding:25px;
+padding:20px;
 border-radius:20px;
 max-width:450px;
-margin:20px auto;
+margin:auto;
 text-align:center;
 }
 input,select,button{
@@ -38,54 +38,44 @@ text-align:left;
 font-size:13px;
 opacity:.8;
 }
-video{
-width:100%;
-border-radius:12px;
-margin-top:12px;
-}
-.barbg{
+.bar{
 background:#334155;
 height:20px;
 border-radius:20px;
 overflow:hidden;
 margin-top:15px;
 }
-#bar{
+#fill{
 height:20px;
 width:0%;
+background:#22c55e;
+}
+video,iframe{
+width:100%;
+border-radius:12px;
+margin-top:12px;
+border:none;
 }
 </style>
 </head>
 <body>
 
 <div class="box" id="login">
-
 <h1>🚀 AMKO AI</h1>
-<p>Login First</p>
-
-<input id="gmail"
-placeholder="Enter Gmail">
-
-<button onclick="login()">
-🔐 Continue
-</button>
-
+<input id="gmail" placeholder="Enter Gmail">
+<button onclick="login()">🔐 Continue</button>
 </div>
 
-<div class="box"
-id="home"
-style="display:none">
+<div class="box" id="home" style="display:none">
 
 <h2>👑 Owner Mode Active</h2>
 
 <div class="step">
 Profile: owner@gmail.com
-<br><br>
-Unlimited Access
 </div>
 
 <input id="ytlink"
-placeholder="Paste YouTube link">
+placeholder="Paste YouTube Link">
 
 <input type="file"
 id="videoFile"
@@ -102,7 +92,7 @@ Video မရွေးရသေးပါ
 <option>Chinese → Myanmar</option>
 </select>
 
-<select id="voice">
+<select>
 <option>Myanmar Male Voice</option>
 <option>Myanmar Female Voice</option>
 </select>
@@ -119,21 +109,12 @@ Video မရွေးရသေးပါ
 🎬 English → Myanmar ✓
 </div>
 
-<div class="step">
-🎬 Chinese → Myanmar ✓
-</div>
-
 <h3>⚙️ Settings</h3>
 
 <select>
-<option>Subtitle: Default</option>
+<option>Subtitle Default</option>
 <option>Large</option>
-<option>Minimal</option>
 </select>
-
-<button>
-💾 Save Settings
-</button>
 
 </div>
 
@@ -153,23 +134,12 @@ alert("Gmail ထည့်ပါ");
 return;
 }
 
-document.getElementById(
-"login"
-).style.display=
-"none";
-
-document.getElementById(
-"home"
-).style.display=
-"block";
+login.style.display="none";
+home.style.display="block";
 
 }
 
-document
-.getElementById(
-"videoFile"
-)
-.addEventListener(
+videoFile.addEventListener(
 "change",
 function(){
 
@@ -178,11 +148,7 @@ this.files[0];
 
 if(currentFile){
 
-document
-.getElementById(
-"fileStatus"
-)
-.innerText=
+fileStatus.innerText=
 "📁 "+currentFile.name;
 
 }
@@ -192,33 +158,32 @@ document
 function start(){
 
 let link=
-document.getElementById(
-"ytlink"
-).value;
+ytlink.value;
 
 if(
 !currentFile &&
 link==""
 ){
+
 alert(
 "YouTube link သို့ Video ထည့်ပါ"
 );
+
 return;
+
 }
 
-document
-.getElementById(
-"process"
-)
-.innerHTML=`
+process.innerHTML=`
 
-<h2>🤖 AI Processing...</h2>
+<h2>
+🤖 AI Processing...
+</h2>
 
-<div class="barbg">
-<div id="bar"></div>
+<div class='bar'>
+<div id='fill'></div>
 </div>
 
-<p id="percent">
+<p id='percent'>
 0%
 </p>
 
@@ -231,52 +196,38 @@ id='status'>
 
 let p=0;
 
-let timer=
+let t=
 setInterval(()=>{
 
 p+=10;
 
-document
-.getElementById(
-"bar"
-)
-.style.width=
+fill.style.width=
 p+"%";
 
-document
-.getElementById(
-"percent"
-)
-.innerText=
+percent.innerText=
 p+"%";
 
-if(p==20){
+if(p==20)
 status.innerText=
 "✅ Video analyzed";
-}
 
-if(p==40){
+if(p==40)
 status.innerText=
-"🌐 Translating...";
-}
+"🌐 Translating";
 
-if(p==60){
+if(p==60)
 status.innerText=
-"🗣️ Myanmar voice...";
-}
+"🗣️ Voice creating";
 
-if(p==80){
+if(p==80)
 status.innerText=
-"📝 Subtitle...";
-}
+"📝 Subtitle";
 
 if(p>=100){
 
-clearInterval(
-timer
-);
+clearInterval(t);
 
-let video="";
+let media="";
 
 if(currentFile){
 
@@ -285,7 +236,7 @@ URL.createObjectURL(
 currentFile
 );
 
-video=`
+media=`
 
 <video
 controls
@@ -293,10 +244,10 @@ src="${url}">
 </video>
 
 <a href="${url}"
-download="amko.mp4">
+download>
 
 <button>
-⬇️ Download Video
+⬇️ Download
 </button>
 
 </a>
@@ -305,33 +256,42 @@ download="amko.mp4">
 
 }else{
 
-video=`
+let id="";
 
-<div class='step'>
-📺 YouTube:
-<br><br>
-${link}
-</div>
+if(
+link.includes("v=")
+){
+
+id=
+link
+.split("v=")[1]
+.split("&")[0];
+
+}
+
+media=`
+
+<iframe
+height="220"
+src="
+https://www.youtube.com/embed/${id}">
+</iframe>
 
 `;
 
 }
 
-document
-.getElementById(
-"process"
-)
-.innerHTML=`
+process.innerHTML=`
 
 <h2>
 ✅ Translation Complete
 </h2>
 
-${video}
+${media}
 
 <div class='step'>
 
-📝 Subtitle
+📝 Subtitle:
 
 <br><br>
 
@@ -340,7 +300,7 @@ ${video}
 
 <br>
 
-[00:04]
+[00:03]
 AMKO AI
 ဘာသာပြန်ပြီးပါပြီ
 
@@ -354,7 +314,7 @@ AMKO AI
 
 }
 
-},500)
+},500);
 
 }
 
