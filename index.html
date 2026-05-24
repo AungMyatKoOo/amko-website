@@ -18,6 +18,7 @@ border-radius:20px;
 max-width:450px;
 margin:auto;
 text-align:center;
+margin-top:20px;
 }
 input,select,button{
 width:100%;
@@ -26,6 +27,9 @@ margin-top:12px;
 border:none;
 border-radius:12px;
 font-size:16px;
+}
+button{
+cursor:pointer;
 }
 .step{
 background:#334155;
@@ -60,18 +64,23 @@ border:none;
 </head>
 <body>
 
-<div class="box" id="login">
+<div class="box" id="loginPage">
 <h1>🚀 AMKO AI</h1>
+<p>Login with Gmail</p>
+
 <input id="gmail" placeholder="Enter Gmail">
-<button onclick="login()">🔐 Continue</button>
+
+<button onclick="loginUser()">
+🔐 Continue
+</button>
 </div>
 
-<div class="box" id="home" style="display:none">
+<div class="box" id="homePage" style="display:none">
 
 <h2>👑 Owner Mode Active</h2>
 
-<div class="step">
-Profile: owner@gmail.com
+<div class="step" id="profileBox">
+Profile: -
 </div>
 
 <input id="ytlink"
@@ -103,52 +112,54 @@ Video မရွေးရသေးပါ
 
 <div id="process"></div>
 
-<h3>📜 History</h3>
-
-<div class="step">
-🎬 English → Myanmar ✓
-</div>
-
-<h3>⚙️ Settings</h3>
-
-<select>
-<option>Subtitle Default</option>
-<option>Large</option>
-</select>
-
 </div>
 
 <script>
 
-let currentFile;
+let currentFile=null;
 
-function login(){
+function loginUser(){
 
-let g=
+let gmail=
 document.getElementById(
 "gmail"
-).value;
+).value.trim();
 
-if(g==""){
+if(gmail==""){
 alert("Gmail ထည့်ပါ");
 return;
 }
 
-login.style.display="none";
-home.style.display="block";
+document.getElementById(
+"profileBox"
+).innerHTML=
+"Profile: "+gmail;
+
+document.getElementById(
+"loginPage"
+).style.display="none";
+
+document.getElementById(
+"homePage"
+).style.display="block";
 
 }
 
-videoFile.addEventListener(
+document
+.getElementById("videoFile")
+.addEventListener(
 "change",
 function(){
 
-currentFile=
-this.files[0];
+currentFile=this.files[0];
 
 if(currentFile){
 
-fileStatus.innerText=
+document
+.getElementById(
+"fileStatus"
+)
+.innerText=
 "📁 "+currentFile.name;
 
 }
@@ -158,12 +169,11 @@ fileStatus.innerText=
 function start(){
 
 let link=
-ytlink.value;
+document.getElementById(
+"ytlink"
+).value.trim();
 
-if(
-!currentFile &&
-link==""
-){
+if(!currentFile && link==""){
 
 alert(
 "YouTube link သို့ Video ထည့်ပါ"
@@ -173,22 +183,19 @@ return;
 
 }
 
-process.innerHTML=`
+document.getElementById(
+"process"
+).innerHTML=`
 
-<h2>
-🤖 AI Processing...
-</h2>
+<h2>🤖 AI Processing...</h2>
 
 <div class='bar'>
 <div id='fill'></div>
 </div>
 
-<p id='percent'>
-0%
-</p>
+<p id='percent'>0%</p>
 
-<div class='step'
-id='status'>
+<div class='step' id='status'>
 ⏳ Starting...
 </div>
 
@@ -196,32 +203,35 @@ id='status'>
 
 let p=0;
 
-let t=
-setInterval(()=>{
+let t=setInterval(()=>{
 
 p+=10;
 
-fill.style.width=
+document.getElementById(
+"fill"
+).style.width=
 p+"%";
 
-percent.innerText=
+document.getElementById(
+"percent"
+).innerText=
 p+"%";
 
 if(p==20)
-status.innerText=
+document.getElementById("status").innerText=
 "✅ Video analyzed";
 
 if(p==40)
-status.innerText=
+document.getElementById("status").innerText=
 "🌐 Translating";
 
 if(p==60)
-status.innerText=
+document.getElementById("status").innerText=
 "🗣️ Voice creating";
 
 if(p==80)
-status.innerText=
-"📝 Subtitle";
+document.getElementById("status").innerText=
+"📝 Subtitle creating";
 
 if(p>=100){
 
@@ -232,78 +242,51 @@ let media="";
 if(currentFile){
 
 let url=
-URL.createObjectURL(
-currentFile
-);
+URL.createObjectURL(currentFile);
 
 media=`
+<video controls src="${url}"></video>
 
-<video
-controls
-src="${url}">
-</video>
-
-<a href="${url}"
-download>
-
-<button>
-⬇️ Download
-</button>
-
+<a href="${url}" download="${currentFile.name}">
+<button>⬇️ Download</button>
 </a>
-
 `;
 
 }else{
 
 let id="";
 
-if(
-link.includes("v=")
-){
-
-id=
-link
-.split("v=")[1]
-.split("&")[0];
-
+if(link.includes("v=")){
+id=link.split("v=")[1].split("&")[0];
 }
 
 media=`
-
 <iframe
 height="220"
-src="
-https://www.youtube.com/embed/${id}">
+src="https://www.youtube.com/embed/${id}">
 </iframe>
-
 `;
 
 }
 
-process.innerHTML=`
+document.getElementById(
+"process"
+).innerHTML=`
 
-<h2>
-✅ Translation Complete
-</h2>
+<h2>✅ Translation Complete</h2>
 
 ${media}
 
 <div class='step'>
-
 📝 Subtitle:
 
 <br><br>
 
-[00:01]
-မင်္ဂလာပါ
+[00:01] မင်္ဂလာပါ
 
 <br>
 
-[00:03]
-AMKO AI
-ဘာသာပြန်ပြီးပါပြီ
-
+[00:04] AMKO AI ဘာသာပြန်ပြီးပါပြီ
 </div>
 
 <div class='step'>
