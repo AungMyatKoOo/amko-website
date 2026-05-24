@@ -9,6 +9,7 @@ background:#0f172a;
 color:white;
 font-family:Arial;
 padding:20px;
+margin:0;
 }
 .box{
 background:#1e293b;
@@ -18,7 +19,7 @@ max-width:430px;
 margin:auto;
 text-align:center;
 }
-button,input{
+input,button,select{
 width:100%;
 padding:14px;
 margin-top:12px;
@@ -44,9 +45,19 @@ border-radius:12px;
 
 <h1>🚀 AMKO AI</h1>
 
-<input type="file"
+<input
+id="ytlink"
+placeholder="Paste YouTube link">
+
+<input
+type="file"
 id="videoFile"
 accept="video/*">
+
+<select id="voice">
+<option>Myanmar Male Voice</option>
+<option>Myanmar Female Voice</option>
+</select>
 
 <div id="status">
 Video မရွေးရသေးပါ
@@ -65,36 +76,38 @@ Video မရွေးရသေးပါ
 let currentFile;
 
 document
-.getElementById(
-"videoFile"
-)
+.getElementById("videoFile")
 .addEventListener(
 "change",
 function(){
 
-currentFile=
-this.files[0];
+currentFile=this.files[0];
 
 if(currentFile){
 
 document
-.getElementById(
-"status"
-)
+.getElementById("status")
 .innerHTML=
 "📁 "+currentFile.name;
 
 }
 
-}
-);
+});
 
-async function start(){
+function start(){
 
-if(!currentFile){
+let link=
+document.getElementById(
+"ytlink"
+).value;
+
+if(
+!currentFile &&
+link==""
+){
 
 alert(
-"Video ရွေးပါ"
+"YouTube link သို့ Video ထည့်ပါ"
 );
 
 return;
@@ -104,40 +117,70 @@ return;
 document
 .getElementById(
 "result"
-)
-.innerHTML=`
+).innerHTML=`
 
 <div class='step'>
-🤖 AI Processing...
+🤖 AI analyzing voice...
+</div>
+
+<div class='step'>
+🌐 Translating to Myanmar...
+</div>
+
+<div class='step'>
+🗣️ Creating Myanmar Voice...
 </div>
 
 `;
 
 setTimeout(()=>{
 
+let video="";
+
+if(currentFile){
+
 let url=
 URL.createObjectURL(
 currentFile
 );
 
-document
-.getElementById(
-"result"
-)
-.innerHTML=`
-
-<h2>
-✅ Translation Complete
-</h2>
+video=`
 
 <video
 controls
 src="${url}">
 </video>
 
+`;
+
+}else{
+
+video=`
+
+<div class='step'>
+📺 YouTube Link:
+<br><br>
+${link}
+</div>
+
+`;
+
+}
+
+document
+.getElementById(
+"result"
+).innerHTML=`
+
+<h2>
+✅ Translation Complete
+</h2>
+
+${video}
+
 <div class='step'>
 
-📝 Myanmar Subtitle:
+📝 Subtitle:
 
 <br><br>
 
@@ -146,23 +189,19 @@ src="${url}">
 
 <br>
 
-[00:03]
+[00:04]
 AMKO AI
 ဘာသာပြန်ပြီးပါပြီ
 
 </div>
 
-<a
-href="${url}"
-download="amko_video.mp4">
+<div class='step'>
+🗣️ Myanmar Voice Added
+</div>
 
 <button>
-
 ⬇️ Download
-
 </button>
-
-</a>
 
 `;
 
