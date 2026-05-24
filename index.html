@@ -5,69 +5,135 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body{
+font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
-font-family:Arial;
-padding:20px;
 margin:0;
+padding:20px;
 }
 .box{
 background:#1e293b;
-padding:20px;
+padding:25px;
 border-radius:20px;
-max-width:430px;
-margin:auto;
+max-width:450px;
+margin:20px auto;
 text-align:center;
 }
-input,button,select{
+input,select,button{
 width:100%;
 padding:14px;
 margin-top:12px;
 border:none;
 border-radius:12px;
+font-size:16px;
 }
 .step{
 background:#334155;
-padding:10px;
+padding:12px;
 margin-top:10px;
 border-radius:10px;
+text-align:left;
+}
+.small{
+font-size:13px;
+opacity:.8;
 }
 video{
 width:100%;
-margin-top:15px;
 border-radius:12px;
+margin-top:12px;
+}
+.barbg{
+background:#334155;
+height:20px;
+border-radius:20px;
+overflow:hidden;
+margin-top:15px;
+}
+#bar{
+height:20px;
+width:0%;
 }
 </style>
 </head>
 <body>
 
-<div class="box">
+<div class="box" id="login">
 
 <h1>🚀 AMKO AI</h1>
+<p>Login First</p>
 
-<input
-id="ytlink"
+<input id="gmail"
+placeholder="Enter Gmail">
+
+<button onclick="login()">
+🔐 Continue
+</button>
+
+</div>
+
+<div class="box"
+id="home"
+style="display:none">
+
+<h2>👑 Owner Mode Active</h2>
+
+<div class="step">
+Profile: owner@gmail.com
+<br><br>
+Unlimited Access
+</div>
+
+<input id="ytlink"
 placeholder="Paste YouTube link">
 
-<input
-type="file"
+<input type="file"
 id="videoFile"
 accept="video/*">
+
+<div class="small"
+id="fileStatus">
+Video မရွေးရသေးပါ
+</div>
+
+<select>
+<option>Auto → Myanmar</option>
+<option>English → Myanmar</option>
+<option>Chinese → Myanmar</option>
+</select>
 
 <select id="voice">
 <option>Myanmar Male Voice</option>
 <option>Myanmar Female Voice</option>
 </select>
 
-<div id="status">
-Video မရွေးရသေးပါ
-</div>
-
 <button onclick="start()">
 🎬 Translate
 </button>
 
-<div id="result"></div>
+<div id="process"></div>
+
+<h3>📜 History</h3>
+
+<div class="step">
+🎬 English → Myanmar ✓
+</div>
+
+<div class="step">
+🎬 Chinese → Myanmar ✓
+</div>
+
+<h3>⚙️ Settings</h3>
+
+<select>
+<option>Subtitle: Default</option>
+<option>Large</option>
+<option>Minimal</option>
+</select>
+
+<button>
+💾 Save Settings
+</button>
 
 </div>
 
@@ -75,19 +141,48 @@ Video မရွေးရသေးပါ
 
 let currentFile;
 
+function login(){
+
+let g=
+document.getElementById(
+"gmail"
+).value;
+
+if(g==""){
+alert("Gmail ထည့်ပါ");
+return;
+}
+
+document.getElementById(
+"login"
+).style.display=
+"none";
+
+document.getElementById(
+"home"
+).style.display=
+"block";
+
+}
+
 document
-.getElementById("videoFile")
+.getElementById(
+"videoFile"
+)
 .addEventListener(
 "change",
 function(){
 
-currentFile=this.files[0];
+currentFile=
+this.files[0];
 
 if(currentFile){
 
 document
-.getElementById("status")
-.innerHTML=
+.getElementById(
+"fileStatus"
+)
+.innerText=
 "📁 "+currentFile.name;
 
 }
@@ -105,35 +200,81 @@ if(
 !currentFile &&
 link==""
 ){
-
 alert(
 "YouTube link သို့ Video ထည့်ပါ"
 );
-
 return;
-
 }
 
 document
 .getElementById(
-"result"
-).innerHTML=`
+"process"
+)
+.innerHTML=`
 
-<div class='step'>
-🤖 AI analyzing voice...
+<h2>🤖 AI Processing...</h2>
+
+<div class="barbg">
+<div id="bar"></div>
 </div>
 
-<div class='step'>
-🌐 Translating to Myanmar...
-</div>
+<p id="percent">
+0%
+</p>
 
-<div class='step'>
-🗣️ Creating Myanmar Voice...
+<div class='step'
+id='status'>
+⏳ Starting...
 </div>
 
 `;
 
-setTimeout(()=>{
+let p=0;
+
+let timer=
+setInterval(()=>{
+
+p+=10;
+
+document
+.getElementById(
+"bar"
+)
+.style.width=
+p+"%";
+
+document
+.getElementById(
+"percent"
+)
+.innerText=
+p+"%";
+
+if(p==20){
+status.innerText=
+"✅ Video analyzed";
+}
+
+if(p==40){
+status.innerText=
+"🌐 Translating...";
+}
+
+if(p==60){
+status.innerText=
+"🗣️ Myanmar voice...";
+}
+
+if(p==80){
+status.innerText=
+"📝 Subtitle...";
+}
+
+if(p>=100){
+
+clearInterval(
+timer
+);
 
 let video="";
 
@@ -151,6 +292,15 @@ controls
 src="${url}">
 </video>
 
+<a href="${url}"
+download="amko.mp4">
+
+<button>
+⬇️ Download Video
+</button>
+
+</a>
+
 `;
 
 }else{
@@ -158,7 +308,7 @@ src="${url}">
 video=`
 
 <div class='step'>
-📺 YouTube Link:
+📺 YouTube:
 <br><br>
 ${link}
 </div>
@@ -169,8 +319,9 @@ ${link}
 
 document
 .getElementById(
-"result"
-).innerHTML=`
+"process"
+)
+.innerHTML=`
 
 <h2>
 ✅ Translation Complete
@@ -180,7 +331,7 @@ ${video}
 
 <div class='step'>
 
-📝 Subtitle:
+📝 Subtitle
 
 <br><br>
 
@@ -199,13 +350,11 @@ AMKO AI
 🗣️ Myanmar Voice Added
 </div>
 
-<button>
-⬇️ Download
-</button>
-
 `;
 
-},3000)
+}
+
+},500)
 
 }
 
