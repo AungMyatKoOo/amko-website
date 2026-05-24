@@ -1,99 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AMKO AI</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{
-font-family:Arial,sans-serif;
 background:#0f172a;
-color:white;
-margin:0;
+color:#fff;
+font-family:Arial;
 padding:20px;
+margin:0
 }
 .box{
-background:#1e293b;
-padding:20px;
-border-radius:20px;
 max-width:450px;
 margin:auto;
-text-align:center;
-margin-top:20px;
+background:#1e293b;
+padding:20px;
+border-radius:20px
 }
 input,select,button{
 width:100%;
 padding:14px;
 margin-top:12px;
-border:none;
 border-radius:12px;
-font-size:16px;
+border:none;
+font-size:16px
 }
 button{
-cursor:pointer;
+background:#475569;
+color:white
 }
 .step{
 background:#334155;
 padding:12px;
-margin-top:10px;
 border-radius:10px;
-text-align:left;
-}
-.small{
-font-size:13px;
-opacity:.8;
-}
-.bar{
-background:#334155;
-height:20px;
-border-radius:20px;
-overflow:hidden;
-margin-top:15px;
-}
-#fill{
-height:20px;
-width:0%;
-background:#22c55e;
+margin-top:10px
 }
 video,iframe{
 width:100%;
-border-radius:12px;
-margin-top:12px;
-border:none;
+border-radius:10px;
+margin-top:10px
+}
+.bar{
+height:20px;
+background:#334155;
+border-radius:20px;
+overflow:hidden
+}
+#fill{
+height:100%;
+width:0%;
+background:#22c55e
 }
 </style>
 </head>
 <body>
 
-<div class="box" id="loginPage">
+<div class="box">
+
 <h1>🚀 AMKO AI</h1>
-<p>Login with Gmail</p>
 
-<input id="gmail" placeholder="Enter Gmail">
-
-<button onclick="loginUser()">
-🔐 Continue
-</button>
-</div>
-
-<div class="box" id="homePage" style="display:none">
-
-<h2>👑 Owner Mode Active</h2>
-
-<div class="step" id="profileBox">
-Profile: -
-</div>
-
-<input id="ytlink"
+<input id="yt"
 placeholder="Paste YouTube Link">
 
-<input type="file"
-id="videoFile"
+<input
+type="file"
+id="video"
 accept="video/*">
-
-<div class="small"
-id="fileStatus">
-Video မရွေးရသေးပါ
-</div>
 
 <select>
 <option>Auto → Myanmar</option>
@@ -106,179 +80,145 @@ Video မရွေးရသေးပါ
 <option>Myanmar Female Voice</option>
 </select>
 
-<button onclick="start()">
+<button onclick="run()">
 🎬 Translate
 </button>
 
-<div id="process"></div>
+<div id="out"></div>
 
 </div>
 
 <script>
 
-let currentFile=null;
+let file=null;
 
-function loginUser(){
-
-let gmail=
-document.getElementById(
-"gmail"
-).value.trim();
-
-if(gmail==""){
-alert("Gmail ထည့်ပါ");
-return;
+video.onchange=e=>{
+file=e.target.files[0]
 }
 
-document.getElementById(
-"profileBox"
-).innerHTML=
-"Profile: "+gmail;
+function getYoutubeId(url){
 
-document.getElementById(
-"loginPage"
-).style.display="none";
+const reg=
+/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/;
 
-document.getElementById(
-"homePage"
-).style.display="block";
+let m=url.match(reg);
+
+return m?m[1]:"";
 
 }
 
-document
-.getElementById("videoFile")
-.addEventListener(
-"change",
-function(){
-
-currentFile=this.files[0];
-
-if(currentFile){
-
-document
-.getElementById(
-"fileStatus"
-)
-.innerText=
-"📁 "+currentFile.name;
-
-}
-
-});
-
-function start(){
+function run(){
 
 let link=
-document.getElementById(
-"ytlink"
-).value.trim();
+document.getElementById("yt").value;
 
-if(!currentFile && link==""){
+if(!file&&!link){
 
 alert(
-"YouTube link သို့ Video ထည့်ပါ"
+"Video or YouTube Link ထည့်ပါ"
 );
 
 return;
 
 }
 
-document.getElementById(
-"process"
-).innerHTML=`
+out.innerHTML=`
 
-<h2>🤖 AI Processing...</h2>
+<h2>🤖 Processing</h2>
 
-<div class='bar'>
-<div id='fill'></div>
+<div class=bar>
+<div id=fill></div>
 </div>
 
-<p id='percent'>0%</p>
-
-<div class='step' id='status'>
-⏳ Starting...
-</div>
+<p id=p>0%</p>
 
 `;
 
-let p=0;
+let x=0;
 
 let t=setInterval(()=>{
 
-p+=10;
+x+=10;
 
-document.getElementById(
-"fill"
-).style.width=
-p+"%";
+fill.style.width=x+"%";
 
-document.getElementById(
-"percent"
-).innerText=
-p+"%";
+p.innerText=x+"%";
 
-if(p==20)
-document.getElementById("status").innerText=
-"✅ Video analyzed";
-
-if(p==40)
-document.getElementById("status").innerText=
-"🌐 Translating";
-
-if(p==60)
-document.getElementById("status").innerText=
-"🗣️ Voice creating";
-
-if(p==80)
-document.getElementById("status").innerText=
-"📝 Subtitle creating";
-
-if(p>=100){
+if(x>=100){
 
 clearInterval(t);
 
 let media="";
 
-if(currentFile){
+if(file){
 
 let url=
-URL.createObjectURL(currentFile);
+URL.createObjectURL(file);
 
 media=`
-<video controls src="${url}"></video>
 
-<a href="${url}" download="${currentFile.name}">
-<button>⬇️ Download</button>
+<video controls
+src="${url}">
+</video>
+
+<a href="${url}"
+download="${file.name}">
+<button>
+⬇ Download
+</button>
 </a>
+
 `;
 
 }else{
 
-let id="";
+let id=
+getYoutubeId(link);
 
-if(link.includes("v=")){
-id=link.split("v=")[1].split("&")[0];
-}
+if(id){
 
 media=`
+
 <iframe
-height="220"
-src="https://www.youtube.com/embed/${id}">
+height=250
+src="https://www.youtube-nocookie.com/embed/${id}"
+allowfullscreen>
 </iframe>
+
+<a href="${link}"
+target=_blank>
+
+<button>
+▶ Open YouTube
+</button>
+
+</a>
+
+`;
+
+}else{
+
+media=`
+<div class=step>
+❌ Invalid YouTube Link
+</div>
 `;
 
 }
 
-document.getElementById(
-"process"
-).innerHTML=`
+}
 
-<h2>✅ Translation Complete</h2>
+out.innerHTML=`
+
+<h2>
+✅ Translation Complete
+</h2>
 
 ${media}
 
-<div class='step'>
-📝 Subtitle:
+<div class=step>
+
+📝 Subtitle
 
 <br><br>
 
@@ -286,18 +226,22 @@ ${media}
 
 <br>
 
-[00:04] AMKO AI ဘာသာပြန်ပြီးပါပြီ
+[00:04]
+AMKO AI ဘာသာပြန်ပြီးပါပြီ
+
 </div>
 
-<div class='step'>
-🗣️ Myanmar Voice Added
+<div class=step>
+
+🗣 Myanmar Voice Added
+
 </div>
 
 `;
 
 }
 
-},500);
+},400)
 
 }
 
